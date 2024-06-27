@@ -10,8 +10,6 @@ const authenticationStore = useAuthenticationStore()
 authenticationStore.loadFromServer()
 const infoRef = ref<InstanceType<typeof AvatarDrawers> | null>(null)
 
-const isLogged = ref(true)
-
 const router = useRouter()
 
 const handleOpenDrawer = () => {
@@ -21,7 +19,7 @@ const handleOpenDrawer = () => {
 
 <template>
     <div class='header-content'>
-        <template v-if='isLogged'>
+        <template v-if='authenticationStore.authenticated'>
             <el-menu class='menu' mode='horizontal' :ellipsis='false' background-color='#fff' menu-trigger='click'
                      :default-active='$route.path' >
                 <el-menu-item class='desktop-logo-container no-hover' @click='router.push("/")'>
@@ -43,8 +41,10 @@ const handleOpenDrawer = () => {
         <template v-else>
             <el-menu class='menu' mode='horizontal' :ellipsis='false' background-color='#fff' menu-trigger='click'
                      :default-active='$route.path' >
-                <el-menu-item class='desktop-logo-container no-hover' @click='router.push("/register")' >
-                    <img src='' class='desktop-logo' alt='logo-app' />
+                <el-menu-item class='desktop-logo-container no-hover' @click='router.push("/")' >
+                    <h1>
+                        Fast Work
+                    </h1>
                 </el-menu-item>
                 <div class='flex-grow'></div>
                 <el-menu-item

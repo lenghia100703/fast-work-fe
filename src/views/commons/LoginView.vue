@@ -7,6 +7,7 @@ import { PATHS } from '@/router/paths'
 import { storeToRefs } from 'pinia'
 import { useAuthenticationStore } from '@/stores/useAuthenticationStore'
 import GoogleIconSvg from '@/assets/images/GoogleIconSvg.vue'
+import { login } from '@/services/auth'
 
 const submitLoading = ref<boolean>(false)
 const router = useRouter()
@@ -43,6 +44,7 @@ const loginFormRef = ref<typeof ElForm | null>(null)
 const handleLogin = async (user: any) => {
     try {
         submitLoading.value = true
+        await login(user)
         await router.push(PATHS.HOME)
     } catch (e) {
         console.log(e)

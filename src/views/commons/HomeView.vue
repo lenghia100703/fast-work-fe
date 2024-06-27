@@ -1,7 +1,8 @@
 <script setup lang='ts'>
 
 import FAIcon from '@/components/commons/FAIcon.vue'
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
+import { loadingFullScreen } from '@/utils/loadingFullScreen'
 
 const iconCustomStyle = () => ({
     margin: '0 0 0 8px'
@@ -71,6 +72,10 @@ function isToday(date: Date | null): boolean {
         date.getFullYear() === today.getFullYear()
     );
 }
+
+onMounted(() => {
+    loadingFullScreen()
+})
 </script>
 
 <template>

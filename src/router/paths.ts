@@ -4,4 +4,9 @@ export const PATHS = {
     REGISTER: '/register',
     PROFILE: '/profile',
     SETTING: '/setting',
+    USER_DETAILS: '/user-details/:id',
+
+    // owner
+    MANAGE_CONSTRUCTION: '/owner/manage-construction',
+    MANAGE_EMPLOYEE: '/owner/manage-employee',
 }

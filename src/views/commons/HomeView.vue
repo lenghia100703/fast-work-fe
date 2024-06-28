@@ -1,77 +1,15 @@
 <script setup lang='ts'>
 
 import FAIcon from '@/components/commons/FAIcon.vue'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { loadingFullScreen } from '@/utils/loadingFullScreen'
+import vi from 'element-plus/dist/locale/vi.mjs'
 
 const iconCustomStyle = () => ({
     margin: '0 0 0 8px'
 });
 
-const monthNames = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-];
-
-const daysOfWeek = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
-
-const today = new Date();
-const currentYear = ref(today.getFullYear());
-const currentMonth = ref(today.getMonth());
-
-function getDaysInMonth(year: number, month: number) {
-    const days = [];
-    const firstDayOfMonth = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-
-    for (let i = 0; i < firstDayOfMonth; i++) {
-        days.push({ date: null, number: '', notes: '' });
-    }
-
-    for (let i = 1; i <= daysInMonth; i++) {
-        days.push({ date: new Date(year, month, i), number: i, notes: '' });
-    }
-
-    return days;
-}
-
-const days = reactive(getDaysInMonth(currentYear.value, currentMonth.value));
-
-function prevMonth() {
-    if (currentMonth.value === 0) {
-        currentMonth.value = 11;
-        currentYear.value -= 1;
-    } else {
-        currentMonth.value -= 1;
-    }
-    updateDays();
-}
-
-function nextMonth() {
-    if (currentMonth.value === 11) {
-        currentMonth.value = 0;
-        currentYear.value += 1;
-    } else {
-        currentMonth.value += 1;
-    }
-    updateDays();
-}
-
-function updateDays() {
-    const newDays = getDaysInMonth(currentYear.value, currentMonth.value);
-    days.splice(0, days.length, ...newDays);
-}
-
-function isToday(date: Date | null): boolean {
-    if (!date) return false;
-    const today = new Date();
-    return (
-        date.getDate() === today.getDate() &&
-        date.getMonth() === today.getMonth() &&
-        date.getFullYear() === today.getFullYear()
-    );
-}
+const today = ref(new Date());
 
 onMounted(() => {
     loadingFullScreen()
@@ -94,23 +32,9 @@ onMounted(() => {
             </div>
         </h5>
         <div class="calendar-container">
-            <div class="calendar-header">
-                <button @click="prevMonth">Tháng trước</button>
-                <h2>{{ monthNames[currentMonth] }} {{ currentYear }}</h2>
-                <button @click="nextMonth">Tháng sau</button>
-            </div>
-            <div class="days-of-week">
-                <span v-for="day in daysOfWeek" :key="day">{{ day }}</span>
-            </div>
-            <div class="days-grid">
-                <div
-                    v-for="day in getDaysInMonth(currentYear, currentMonth)"
-                    :key="day.date"
-                    :class="['day', { 'current-day': isToday(day.date) }]"
-                >
-                    <span>{{ day.number }}</span>
-                </div>
-            </div>
+            <el-config-provider :locale="vi">
+                <el-calendar v-model="today" />
+            </el-config-provider>
         </div>
     </div>
 </template>

@@ -6,8 +6,12 @@ export const getCurrentUser = async () => {
     return (await http.get(UserAPI.GET_CURRENT_USER)).data
 }
 
-export const getAllUsers = async (page: any) => {
+export const getUserByPage = async (page: any) => {
     return (await http.get(UserAPI.LIST_USERS(page))).data
+}
+
+export const getUserById = async (id: any) => {
+    return (await http.get(UserAPI.USER_BY_ID(id))).data.data
 }
 
 export const createUser = async (payload: any) => {

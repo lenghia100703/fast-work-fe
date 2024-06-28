@@ -7,8 +7,20 @@ import FAIcon from '@/components/commons/FAIcon.vue'
 <template>
     <el-menu-item :route='PATHS.HOME' :index='PATHS.HOME'>
         <template #title>
-            <FAIcon icon='fa-solid fa-home' class='icon' />
+            <FAIcon icon='fa-solid fa-home' class='icon' color="" />
             Trang chủ
+        </template>
+    </el-menu-item>
+    <el-menu-item :route='PATHS.MANAGE_EMPLOYEE' :index='PATHS.MANAGE_EMPLOYEE'>
+        <template #title>
+            <FAIcon icon='fa-solid fa-user' class='icon' color="" />
+            Quản lý nhân công
+        </template>
+    </el-menu-item>
+    <el-menu-item :route='PATHS.MANAGE_CONSTRUCTION' :index='PATHS.MANAGE_CONSTRUCTION'>
+        <template #title>
+            <FAIcon icon='fa-solid fa-person-digging' class='icon' color="" />
+            Quản lý công trình
         </template>
     </el-menu-item>
 </template>

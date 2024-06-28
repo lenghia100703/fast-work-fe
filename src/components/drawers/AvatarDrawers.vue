@@ -33,19 +33,19 @@ defineExpose({
         </div>
         <el-menu :ellipsis='false' class='menu-bar' menu-trigger='click' mode='vertical' router>
             <el-menu-item :index='PATHS.PROFILE' :route='PATHS.PROFILE' @click='visible = false'>
-                <FAIcon size='large' icon='fa-solid fa-user' class='icon' />
+                <FAIcon size='large' icon='fa-solid fa-user' class='icon' color="" />
                 Hồ sơ cá nhân
             </el-menu-item>
             <el-menu-item :index='PATHS.SETTING' :route='PATHS.SETTING' @click='visible = false'>
-                <FAIcon size='large' icon='fa-solid fa-gear' class='icon' />
+                <FAIcon size='large' icon='fa-solid fa-gear' class='icon' color="" />
                 Cài đặt
             </el-menu-item>
             <el-menu-item @click='handleLogout'>
-                <FAIcon size='large' icon='fa-solid fa-right-from-bracket' class='icon' />
+                <FAIcon size='large' icon='fa-solid fa-right-from-bracket' class='icon' color="" />
                 Đăng xuất
             </el-menu-item>
             <el-menu-item @click='visible = false'>
-                <FAIcon size='large' icon='fa-solid fa-xmark' class='icon' />
+                <FAIcon size='large' icon='fa-solid fa-xmark' class='icon' color="" />
                 Đóng
             </el-menu-item>
         </el-menu>

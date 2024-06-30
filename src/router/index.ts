@@ -6,10 +6,11 @@ import LoginView from '@/views/commons/LoginView.vue'
 import RegisterView from '@/views/commons/RegisterView.vue'
 import ProfileView from '@/views/commons/ProfileView.vue'
 import HomeView from '@/views/commons/HomeView.vue'
-import SettingView from '../views/commons/SettingView.vue'
-import ManageConstructionView from '../views/owner/ManageConstructionView.vue'
-import ManageEmployeeView from '../views/owner/ManageEmployeeView.vue'
-import UserDetailsView from '../views/commons/UserDetailsView.vue'
+import SettingView from '@/views/commons/SettingView.vue'
+import ManageConstructionView from '@/views/owner/ManageConstructionView.vue'
+import ManageEmployeeView from '@/views/owner/ManageEmployeeView.vue'
+import UserDetailsView from '@/views/commons/UserDetailsView.vue'
+import ManageMoneyView from '@/views/owner/ManageMoneyView.vue'
 
 export const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -48,6 +49,11 @@ export const router = createRouter({
                     component: ManageEmployeeView,
                     name: 'manage-employee',
                 },
+                {
+                    path: PATHS.MANAGE_EXPENSE,
+                    component: ManageMoneyView,
+                    name: 'manage-expense',
+                },
             ],
         },
 
@@ -58,14 +64,14 @@ export const router = createRouter({
                 {
                     path: PATHS.LOGIN,
                     component: LoginView,
-                    name: 'login'
+                    name: 'login',
                 },
                 {
                     path: PATHS.REGISTER,
                     component: RegisterView,
-                    name: 'register'
+                    name: 'register',
                 },
             ],
         },
-    ]
+    ],
 })

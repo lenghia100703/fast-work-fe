@@ -4,8 +4,8 @@ import FAIcon from '@/components/commons/FAIcon.vue'
 import { ref, watch } from 'vue'
 
 const iconCustomStyle = () => ({
-    margin: '0 10px 0 0'
-});
+    margin: '0 10px 0 0',
+})
 
 const props = withDefaults(
     defineProps<{
@@ -20,7 +20,7 @@ const props = withDefaults(
         onColor: 'black',
         offColor: '#dcdfe6',
         icon: 'fa-regular fa-lightbulb',
-        title: ''
+        title: '',
     },
 )
 

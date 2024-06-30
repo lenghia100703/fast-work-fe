@@ -6,10 +6,10 @@ import { loadingFullScreen } from '@/utils/loadingFullScreen'
 import vi from 'element-plus/dist/locale/vi.mjs'
 
 const iconCustomStyle = () => ({
-    margin: '0 0 0 8px'
-});
+    margin: '0 0 0 8px',
+})
 
-const today = ref(new Date());
+const today = ref(new Date())
 
 onMounted(() => {
     loadingFullScreen()

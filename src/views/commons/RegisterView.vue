@@ -49,56 +49,56 @@ const rules = reactive<FormRules<any>>({
         {
             validator: (rule: any, value: any, callback: any) => {
                 if (value !== registerForm.password) {
-                    callback('Mật khẩu xác nhận không khớp');
+                    callback('Mật khẩu xác nhận không khớp')
                 } else {
-                    callback();
+                    callback()
                 }
             },
             trigger: 'blur',
         },
     ],
-});
-const registerFormRef = ref<typeof ElForm | null>(null);
+})
+const registerFormRef = ref<typeof ElForm | null>(null)
 const registerForm = reactive<any>({
     username: '',
     email: '',
     password: '',
     confirmPassword: '',
     phone: '',
-});
-const submitLoading = ref<boolean>(false);
+})
+const submitLoading = ref<boolean>(false)
 
 const register = async (user: any) => {
-    submitLoading.value = true;
+    submitLoading.value = true
     try {
-        console.log('Register successful');
+        console.log('Register successful')
         ElMessage({
             type: 'success',
             message: 'Đăng ký thành công.',
-        });
-        await router.push({ name: 'home' });
+        })
+        await router.push({ name: 'home' })
     } catch (error) {
-        console.error('Register failed: ' + error);
-        ElMessage.error('Đăng ký thất bại. Kiểm tra lại thông tin.');
+        console.error('Register failed: ' + error)
+        ElMessage.error('Đăng ký thất bại. Kiểm tra lại thông tin.')
     } finally {
-        submitLoading.value = false;
+        submitLoading.value = false
     }
-};
+}
 
 const submitForm = (formEl: typeof ElForm | null) => {
-    if (!formEl) return;
+    if (!formEl) return
     formEl.validate(async (valid: any) => {
-        loadingFullScreen();
+        loadingFullScreen()
         if (valid) {
-            await register(registerForm);
+            await register(registerForm)
         } else {
-            return false;
+            return false
         }
-    });
-};
+    })
+}
 onMounted(() => {
-    loadingFullScreen();
-});
+    loadingFullScreen()
+})
 
 
 </script>
@@ -123,21 +123,21 @@ onMounted(() => {
                             <el-input v-model="registerForm.confirmPassword" type="password" :show-password="true" />
                         </el-form-item>
                         <el-form-item style='width: 100%;'>
-                                <el-button
-                                    size='large'
-                                    class="btn-submit"
-                                    type="primary"
-                                    :loading="submitLoading"
-                                    @click="submitForm(registerFormRef)"
-                                    @keyup.enter="submitForm(registerFormRef)"
-                                    native-type="submit"
-                                >Đăng ký
-                                </el-button>
+                            <el-button
+                                size='large'
+                                class="btn-submit"
+                                type="primary"
+                                :loading="submitLoading"
+                                @click="submitForm(registerFormRef)"
+                                @keyup.enter="submitForm(registerFormRef)"
+                                native-type="submit"
+                            >Đăng ký
+                            </el-button>
                         </el-form-item>
                     </el-form>
                 </div>
             </el-col>
-            <el-col :span='12' >
+            <el-col :span='12'>
                 <div class='login-title'>
                     <h1 class='title'>
                         Chào mừng bạn!
@@ -147,7 +147,9 @@ onMounted(() => {
                     </h3>
                     <br>
                     <br>
-                    <el-button style='width: 300px;' size='large' type='primary' @click='router.push("/login")' plain>Đăng nhập</el-button>
+                    <el-button style='width: 300px;' size='large' type='primary' @click='router.push("/login")' plain>
+                        Đăng nhập
+                    </el-button>
                 </div>
             </el-col>
         </el-row>
@@ -174,7 +176,6 @@ onMounted(() => {
     justify-content: center;
     align-items: center;
 }
-
 
 
 .btn-submit {

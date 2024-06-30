@@ -9,4 +9,5 @@ export const PATHS = {
     // owner
     MANAGE_CONSTRUCTION: '/owner/manage-construction',
     MANAGE_EMPLOYEE: '/owner/manage-employee',
+    MANAGE_EXPENSE: '/owner/manage-expense',
 }

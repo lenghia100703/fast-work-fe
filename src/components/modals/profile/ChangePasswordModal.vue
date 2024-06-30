@@ -77,7 +77,7 @@ const submitForm = (formEl: typeof ElForm | null) => {
             const formData = {
                 currentPassword: editForm.value.oldPassword,
                 password: editForm.value.newPassword,
-                confirmPassword: editForm.value.confirmPassword
+                confirmPassword: editForm.value.confirmPassword,
             }
             handleChangePassword(formData)
         } else {

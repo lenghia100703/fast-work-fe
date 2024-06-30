@@ -86,7 +86,8 @@ onMounted(async () => {
         </el-table-column>
         <el-table-column label='Họ và tên' width="180" prop='username' sortable>
             <template #default='{ row }'>
-                <el-popover placement='bottom' :width='200' trigger='click' :content='row.username'>
+                <el-popover placement='bottom' :width='200' trigger='click' :content='row.username'
+                            popper-style="text-align: center">
                     <template #reference
                     >
                         <el-text truncated> {{ row.username }}</el-text>
@@ -97,7 +98,8 @@ onMounted(async () => {
         </el-table-column>
         <el-table-column label='Email' width="220" prop='email'>
             <template #default='{ row }'>
-                <el-popover placement='bottom' :width='300' trigger='click' :content='row.email'>
+                <el-popover placement='bottom' :width='300' trigger='click' :content='row.email'
+                            popper-style="text-align: center">
                     <template #reference
                     >
                         <el-text truncated> {{ row.email }}</el-text>
@@ -108,7 +110,8 @@ onMounted(async () => {
         </el-table-column>
         <el-table-column label='Số điện thoại' width="150" prop='phone' :align="'center'">
             <template #default='{ row }'>
-                <el-popover placement='bottom' :width='200' trigger='click' :content='row.phone'>
+                <el-popover placement='bottom' :width='150' trigger='click' :content='row.phone'
+                            popper-style="text-align: center">
                     <template #reference
                     >
                         <el-text truncated> {{ row.phone }}</el-text>
@@ -117,9 +120,9 @@ onMounted(async () => {
                 </el-popover>
             </template>
         </el-table-column>
-        <el-table-column label='Địa chỉ' width="300" prop='address'>
+        <el-table-column label='Địa chỉ' width="250" prop='address'>
             <template #default='{ row }'>
-                <el-popover placement='bottom' :width='200' trigger='click' :content='row.address'>
+                <el-popover placement='bottom' :width='250' trigger='click' :content='row.address'>
                     <template #reference
                     >
                         <el-text truncated> {{ row.address }}</el-text>
@@ -135,7 +138,8 @@ onMounted(async () => {
         </el-table-column>
         <el-table-column label='Ảnh đại diện' width="120" prop='avatar' :align="'center'">
             <template #default='{ row }'>
-                <el-popover placement='bottom' :show-after='400' :width='300' trigger='hover'>
+                <el-popover placement='bottom' :show-after='400' :width='300' trigger='hover'
+                            popper-style="text-align: center">
                     <template #reference>
                         <el-text truncated>
                             <el-link :href='row.image' target='_blank'>{{ row.avatar }}</el-link>
@@ -154,9 +158,10 @@ onMounted(async () => {
                 </el-text>
             </template>
         </el-table-column>
-        <el-table-column label='Người tạo' width="220" prop='createdBy' >
+        <el-table-column label='Người tạo' width="220" prop='createdBy'>
             <template #default='{ row }'>
-                <el-popover placement='bottom' trigger='click' :width='300' :content='row.createdBy'>
+                <el-popover placement='bottom' trigger='click' :width='300' :content='row.createdBy'
+                            popper-style="text-align: center">
                     <template #reference
                     >
                         <el-text truncated> {{ row.createdBy }}</el-text>
@@ -167,7 +172,8 @@ onMounted(async () => {
         </el-table-column>
         <el-table-column label='Người sửa' width="220" prop='updatedBy'>
             <template #default='{ row }'>
-                <el-popover placement='bottom' trigger='click' :width='300' :content='row.updatedBy'>
+                <el-popover placement='bottom' trigger='click' :width='300' :content='row.updatedBy'
+                            popper-style="text-align: center">
                     <template #reference
                     >
                         <el-text truncated> {{ row.updatedBy }}</el-text>

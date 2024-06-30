@@ -1,6 +1,4 @@
 <script setup lang='ts'>
-import MenuHeader from '@/components/commons/MenuHeader.vue'
-import { PATHS } from '@/router/paths'
 import { useAuthenticationStore } from '@/stores/useAuthenticationStore'
 import { ref } from 'vue'
 import AvatarDrawers from '@/components/drawers/AvatarDrawers.vue'
@@ -21,7 +19,7 @@ const handleOpenDrawer = () => {
     <div class='header-content'>
         <template v-if='authenticationStore.authenticated'>
             <el-menu class='menu' mode='horizontal' :ellipsis='false' background-color='#fff' menu-trigger='click'
-                     :default-active='$route.path' >
+                     :default-active='$route.path'>
                 <el-menu-item class='desktop-logo-container no-hover' @click='router.push("/")'>
                     <h1>
                         Fast Work
@@ -40,8 +38,8 @@ const handleOpenDrawer = () => {
 
         <template v-else>
             <el-menu class='menu' mode='horizontal' :ellipsis='false' background-color='#fff' menu-trigger='click'
-                     :default-active='$route.path' >
-                <el-menu-item class='desktop-logo-container no-hover' @click='router.push("/")' >
+                     :default-active='$route.path'>
+                <el-menu-item class='desktop-logo-container no-hover' @click='router.push("/")'>
                     <h1>
                         Fast Work
                     </h1>

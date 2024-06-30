@@ -4,20 +4,22 @@ import { PROVIDERS } from '@/constants/provider'
 import { onMounted, ref } from 'vue'
 import { loadingFullScreen } from '@/utils/loadingFullScreen'
 import { getUserById } from '@/services/user'
-import { ElForm } from 'element-plus'
 import FAIcon from '@/components/commons/FAIcon.vue'
+import { formatPhoneNumber } from '@/helpers/formatPhoneNumber'
 
 const route = useRoute()
 const id = route.params.id
 const userDetailInfo = ref()
+const phone = ref('')
 
 const iconCustomStyle = () => ({
-    margin: '0 10px 0 0'
-});
+    margin: '0 10px 0 0',
+})
 
 const loadUserDetail = async () => {
     try {
         userDetailInfo.value = await getUserById(id)
+        phone.value = userDetailInfo.value.phone
     } catch (e) {
         console.error(e)
     }
@@ -42,14 +44,14 @@ onMounted(async () => {
                     <el-image
                         z-index="20"
                         class='avatar-image'
-                        src='https://avatars.githubusercontent.com/u/100254753?v=4'
+                        :src='userDetailInfo?.avatar'
                     />
                     <div class="info">
                         <el-row>
-                            <el-text tag="b" style="font-size: 25px">Lê Nghĩa</el-text>
+                            <el-text tag="b" style="font-size: 25px">{{ userDetailInfo?.username }}</el-text>
                         </el-row>
                         <el-row>
-                            <el-text  style="font-size: 14px">lenghia1007@gmail.com</el-text>
+                            <el-text style="font-size: 14px">{{ userDetailInfo?.email }}</el-text>
                         </el-row>
                     </div>
                 </div>
@@ -63,51 +65,67 @@ onMounted(async () => {
                     <el-tab-pane label="Tổng quan">
                         <el-row class="row-info">
                             <el-text size="large">
-                                <FAIcon :custom-style="iconCustomStyle" icon="fa-solid fa-house-chimney-window" color="" />
-                                Sống tại {{ userDetailInfo?.address }}
+                                <FAIcon :custom-style="iconCustomStyle" icon="fa-solid fa-house-chimney-window"
+                                        color="" />
+                                Sống tại
+                                <el-text tag="b" size="large">{{ userDetailInfo?.address }}</el-text>
                             </el-text>
                         </el-row>
 
                         <el-row class="row-info">
                             <el-text size="large">
                                 <FAIcon :custom-style="iconCustomStyle" icon="fa-solid fa-phone" color="" />
-                                Di động {{ userDetailInfo?.phone }}
+                                Di động
+                                <el-text tag="b" size="large">{{ formatPhoneNumber(phone) }}</el-text>
                             </el-text>
                         </el-row>
 
                         <el-row class="row-info">
                             <el-text size="large">
                                 <FAIcon :custom-style="iconCustomStyle" icon="fa-solid fa-cake-candles" color="" />
-                                Tuổi {{ userDetailInfo?.age }}
+                                Tuổi
+                                <el-text tag="b" size="large">{{ userDetailInfo?.age }}</el-text>
                             </el-text>
                         </el-row>
                     </el-tab-pane>
                     <el-tab-pane label="Số công">Config</el-tab-pane>
                     <el-tab-pane label="Tạm ứng">Role</el-tab-pane>
                     <el-tab-pane label="Tài khoản">
-                        <el-form
-                            label-position='left'
-                            label-width='150px'>
-                            <el-form-item label='Vai trò' prop='role'>
-                                <el-text class='user-info-detail' type='success' tag="b">
-                                    {{ userDetailInfo?.role }}
+                        <el-row class="row-info">
+                            <el-text size="large">
+                                <FAIcon :custom-style="iconCustomStyle" icon="fa-solid fa-user-tag" color="" />
+                                Vai trò:
+                                <el-text tag="b" type="success" size="large">{{ userDetailInfo?.role }}</el-text>
+                            </el-text>
+                        </el-row>
+                        <el-row class="row-info">
+                            <el-text size="large">
+                                <FAIcon icon="fa-regular fa-circle-check" :custom-style="iconCustomStyle" color="" />
+                                Xác thực mail:
+                                <el-text :type="userDetailInfo?.emailConfirmed ? 'success' : 'danger'" size="large"
+                                         tag="b">
+                                    {{ userDetailInfo?.emailConfirmed ? 'Đã xác nhận' : 'Chưa xác nhận' }}
                                 </el-text>
-                            </el-form-item>
-                            <el-form-item label='Nền tảng đăng ký' prop='provider'>
-                                <el-text class='user-info-detail' type='info' tag="b"
+                            </el-text>
+                        </el-row>
+                        <el-row class="row-info">
+                            <el-text size="large">
+                                <FAIcon :custom-style="iconCustomStyle" icon="fa-regular fa-registered" color="" />
+                                Nền tảng đăng ký:
+                                <el-text class='user-info-detail' type='info' tag="b" size="large"
                                          v-if="userDetailInfo?.provider === PROVIDERS.LOCAL">
                                     {{ userDetailInfo?.provider }}
                                 </el-text>
-                                <el-text class='user-info-detail' type='warning' tag="b"
+                                <el-text class='user-info-detail' type='warning' tag="b" size="large"
                                          v-else-if="userDetailInfo?.provider === PROVIDERS.GOOGLE">
                                     {{ userDetailInfo?.provider }}
                                 </el-text>
-                                <el-text class='user-info-detail' type='primary' tag="b"
+                                <el-text class='user-info-detail' type='primary' tag="b" size="large"
                                          v-else-if="userDetailInfo?.provider === PROVIDERS.FACEBOOK">
                                     {{ userDetailInfo?.provider }}
                                 </el-text>
-                            </el-form-item>
-                        </el-form>
+                            </el-text>
+                        </el-row>
                     </el-tab-pane>
                 </el-tabs>
             </el-card>

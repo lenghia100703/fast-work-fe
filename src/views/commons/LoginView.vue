@@ -89,7 +89,7 @@ onMounted(() => {
 <template>
     <div class='container' style='height: 500px'>
         <el-row justify='center' align='middle' style='height: 100%'>
-            <el-col :span='12' >
+            <el-col :span='12'>
                 <div class='login-title'>
                     <h1 class='title'>
                         Chào mừng bạn đã quay trở lại!
@@ -99,7 +99,9 @@ onMounted(() => {
                     </h3>
                     <br>
                     <br>
-                    <el-button style='width: 300px;' size='large' type='primary' @click='router.push("/register")' plain>Đăng ký</el-button>
+                    <el-button style='width: 300px;' size='large' type='primary' @click='router.push("/register")'
+                               plain>Đăng ký
+                    </el-button>
                 </div>
             </el-col>
             <el-col :span='12'>

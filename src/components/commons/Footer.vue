@@ -49,7 +49,8 @@ import FAIcon from '@/components/commons/FAIcon.vue'
                 <el-col :span='4'></el-col>
                 <el-col :span='6'>
                     <el-image class='image' src='https://hoangthanhthanglong.com/store/uploads/2019/01/LOGO-HT.png' />
-                    <el-image class='image' src='https://hoangthanhthanglong.com/store/uploads/2023/05/logoSaleNoti.png' />
+                    <el-image class='image'
+                              src='https://hoangthanhthanglong.com/store/uploads/2023/05/logoSaleNoti.png' />
                 </el-col>
             </el-row>
         </div>

@@ -5,7 +5,7 @@ const http = axios.create({
     // @ts-ignore
     baseURL: import.meta.env.VITE_APP_ROOT_API,
     transformRequest: [
-        function (data: any, headers: any) {
+        function(data: any, headers: any) {
             return JSON.stringify(data)
         },
     ],
@@ -24,7 +24,7 @@ http.interceptors.response.use(
             // logout().then((r) => {console.log(r)})
         }
         return Promise.reject(error)
-    }
+    },
 )
 
 export default http

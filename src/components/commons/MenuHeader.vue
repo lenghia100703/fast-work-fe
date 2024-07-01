@@ -23,6 +23,12 @@ import FAIcon from '@/components/commons/FAIcon.vue'
             Quản lý công trình
         </template>
     </el-menu-item>
+    <el-menu-item :route='PATHS.MANAGE_EXPENSE' :index='PATHS.MANAGE_EXPENSE'>
+        <template #title>
+            <FAIcon icon='fa-solid fa-hand-holding-dollar' class='icon' color="" />
+            Quản lý chi tiêu
+        </template>
+    </el-menu-item>
 </template>
 
 <style scoped>

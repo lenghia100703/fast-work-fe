@@ -5,6 +5,7 @@ export const PATHS = {
     PROFILE: '/profile',
     SETTING: '/setting',
     USER_DETAILS: '/user-details/:id',
+    CONSTRUCTION_DETAILS: '/construction-details/:id',
 
     // owner
     MANAGE_CONSTRUCTION: '/owner/manage-construction',

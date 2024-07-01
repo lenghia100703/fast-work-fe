@@ -11,6 +11,7 @@ import ManageConstructionView from '@/views/owner/ManageConstructionView.vue'
 import ManageEmployeeView from '@/views/owner/ManageEmployeeView.vue'
 import UserDetailsView from '@/views/commons/UserDetailsView.vue'
 import ManageMoneyView from '@/views/owner/ManageMoneyView.vue'
+import ConstructionDetailsView from '../views/commons/ConstructionDetailsView.vue'
 
 export const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,11 @@ export const router = createRouter({
                     path: PATHS.USER_DETAILS,
                     component: UserDetailsView,
                     name: 'user-details',
+                },
+                {
+                    path: PATHS.CONSTRUCTION_DETAILS,
+                    component: ConstructionDetailsView,
+                    name: 'construction-details',
                 },
                 {
                     path: PATHS.SETTING,

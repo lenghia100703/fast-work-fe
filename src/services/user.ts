@@ -1,9 +1,14 @@
 import http from '@/services/http'
 import { UserAPI } from '@/constants/API'
 import httpFile from '@/services/httpFile'
+import axios from 'axios'
 
 export const getCurrentUser = async () => {
     return (await http.get(UserAPI.GET_CURRENT_USER)).data
+}
+
+export const getUserRole = async () => {
+    return (await http.get(UserAPI.USER_ROLE)).data.data
 }
 
 export const getUserByPage = async (page: any) => {
@@ -28,4 +33,8 @@ export const editUser = async (userId: any, payload: any) => {
 
 export const changePassword = async (userId: any, payload: any) => {
     await http.put(UserAPI.CHANGE_PASSWORD(userId), payload)
+}
+
+export const getUserByIdAndRole = async (id: any, role: any) => {
+    return (await http.get(UserAPI.ID_ROLE(id, role))).data.data
 }

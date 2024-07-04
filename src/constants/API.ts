@@ -28,3 +28,11 @@ export const AdvanceAPI = {
     ADVANCE_BY_ID: (advanceId: any) => `/advance/${advanceId}`,
 }
 
+export const ConstructionAPI = {
+    LIST_CONSTRUCTIONS: (page: any) => `/construction?page=${page}`,
+    EDIT_CONSTRUCTION: (constructionId: any) => `/construction/${constructionId}`,
+    DELETE_CONSTRUCTION: (constructionId: any) => `/construction/${constructionId}`,
+    CREATE_CONSTRUCTION: '/construction',
+    CONSTRUCTION_BY_ID: (constructionId: any) => `/construction/${constructionId}`,
+}
+

@@ -28,14 +28,6 @@ const handleSearch = async () => {
     await loadTableData(1)
 }
 
-const getUserData = async (id: any, role: any) => {
-    try {
-        const user = await getUserByIdAndRole(id, role)
-    } catch (e) {
-        console.log(e)
-    }
-}
-
 const loadTableData = async (page: any) => {
     tableLoading.value = true
     try {
@@ -43,13 +35,10 @@ const loadTableData = async (page: any) => {
 
         res.data.map(async (item: any, index: any) => {
             const {giver, responder, ...req} = item
-            console.log(giver, responder, req)
             const giverArr = giver.split(" - ")
             const responderArr = responder.split(" - ")
             const resGiver = await getUserByIdAndRole(giverArr[0], giverArr[1].toLowerCase())
-            console.log(resGiver)
             const resResponder = await getUserByIdAndRole(responderArr[0], responderArr[1].toLowerCase())
-            console.log(resResponder)
             tableData.value.push({
                 ...req,
                 giver: {

@@ -98,7 +98,7 @@ onMounted(() => {
         <h1 class="title">Cài Đặt Tài Khoản</h1>
         <br />
         <el-row justify="space-evenly">
-            <el-col :span="4">
+            <el-col :span="5">
                 <el-card body-style="padding: 20px 0 20px 0">
                     <div class="button-group">
                         <div
@@ -124,7 +124,7 @@ onMounted(() => {
                     </div>
                 </el-card>
             </el-col>
-            <el-col :span="14">
+            <el-col :span="15">
                 <el-card v-if="tab === 0">
                     <div class='user-container'>
                         <div class='user-info-detail'>
@@ -228,18 +228,12 @@ onMounted(() => {
                 </el-card>
             </el-col>
         </el-row>
-
-
     </div>
 
     <ChangePasswordModal ref='changePasswordModal' />
 </template>
 
 <style scoped>
-.profile-page {
-    margin-left: 50px;
-}
-
 .title {
     text-align: center;
     font-size: 25px;
@@ -278,5 +272,4 @@ div.active {
 .custom-style-notification .el-segmented {
     --el-border-radius-base: 16px;
 }
-
 </style>

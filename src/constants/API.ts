@@ -4,6 +4,7 @@ export const AuthAPI = {
     REGISTER: '/auth/register',
     FORGOT_PASSWORD: '/auth/forgot-password',
     RESEND_CONFIRMATION: '/auth/resend-confirmation',
+    CONFIRM_REGISTRATION: '/auth/confirm-registration',
 }
 
 
@@ -34,5 +35,13 @@ export const ConstructionAPI = {
     DELETE_CONSTRUCTION: (constructionId: any) => `/construction/${constructionId}`,
     CREATE_CONSTRUCTION: '/construction',
     CONSTRUCTION_BY_ID: (constructionId: any) => `/construction/${constructionId}`,
+}
+
+export const ExpenseAPI = {
+    LIST_EXPENSES: (page: any) => `/expense?page=${page}`,
+    EDIT_EXPENSE: (expenseId: any) => `/expense/${expenseId}`,
+    DELETE_EXPENSE: (expenseId: any) => `/expense/${expenseId}`,
+    CREATE_EXPENSE: '/expense',
+    EXPENSE_BY_ID: (expenseId: any) => `/expense/${expenseId}`,
 }
 

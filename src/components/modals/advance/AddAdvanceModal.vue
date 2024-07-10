@@ -134,7 +134,7 @@ defineExpose({
 
 <template>
     <el-dialog v-model='visible' title='Tạo khoản chi phí' width='40%' top='8vh'>
-        <el-form :model='postForm' label-position='top' ref='postFormRef' :rules='rules'>
+        <el-form :model='postForm' label-position='top' ref='postFormRef' :rules='rules' :hide-required-asterisk="true">
             <el-form-item label='Người cho ứng:' prop='giver'>
                 <el-select v-model="postForm.giver" placeholder="Chọn người cho ứng">
                     <el-option

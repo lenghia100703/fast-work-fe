@@ -1,11 +1,6 @@
 <script setup lang='ts'>
 import Header from '@/components/commons/Header.vue'
-import { useAuthenticationStore } from '@/stores/useAuthenticationStore'
 import NavigationDesktop from '@/layouts/NavigationDesktop.vue'
-
-const authenticationStore = useAuthenticationStore()
-
-authenticationStore.loadFromServer()
 </script>
 
 <template>

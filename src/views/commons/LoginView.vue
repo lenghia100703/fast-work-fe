@@ -107,7 +107,7 @@ onMounted(() => {
             <el-col :span='12'>
                 <div class='login-form'>
                     <h2 class='title'>Đăng Nhập</h2>
-                    <el-form label-position='top' :model='loginForm' :rules='rules' ref='loginFormRef'>
+                    <el-form label-position='top' :model='loginForm' :rules='rules' ref='loginFormRef' :hide-required-asterisk="true">
                         <el-form-item label='Email' prop='email'>
                             <el-input v-model='loginForm.email' type='text' clearable />
                         </el-form-item>
@@ -118,11 +118,14 @@ onMounted(() => {
                             <div class='action'>
                                 <span class='redirect'>
                                     <router-link to='/forgot-password' class='to-register'>Quên mật khẩu?</router-link>
+                                    <br>
+                                    <router-link to='/resend-confirmation' class='to-register'>Gửi lại mail kích hoạt</router-link>
                                 </span>
                                 <el-button
                                     class='btn-submit'
                                     :loading='submitLoading'
                                     type='primary'
+                                    size="large"
                                     @click='submitForm(loginFormRef)'
                                     @keyup.enter='submitForm(loginFormRef)'
                                     native-type='submit'
@@ -131,7 +134,6 @@ onMounted(() => {
                                 </el-button>
                             </div>
                         </el-form-item>
-                        <br>
                         <el-form-item style='width: 100%;'>
                             <el-button style='width: 100%;' type='primary' size='large'>
                                 <span class='icon-google'>

@@ -7,12 +7,14 @@ import { onMounted, ref } from 'vue'
 import { loadingFullScreen } from '@/utils/loadingFullScreen'
 import { getConstructionByPage } from '@/services/construction'
 import AddConstructionModal from '@/components/modals/construction/AddConstructionModal.vue'
+import { useRouter } from 'vue-router'
 
 const tableData = ref<any[]>([])
 const totalData = ref<any>(0)
 const tableLoading = ref(false)
 const searchLoading = ref(false)
 const searchName = ref('')
+const router = useRouter()
 
 const addConstructionModal = ref<InstanceType<typeof AddConstructionModal>>()
 const editUserModal = ref<InstanceType<typeof EditUserModal>>()
@@ -24,6 +26,18 @@ const handleChangePage = async (val: any) => {
 
 const handleSearch = async () => {
     await loadTableData(1)
+}
+
+const handleRoute = (data: any) => {
+    router.push({
+        name: 'construction-details',
+        params: {
+            id: data.id
+        },
+        query: {
+            tab: data.tab
+        }
+    })
 }
 
 const loadTableData = async (page: any) => {
@@ -149,10 +163,10 @@ onMounted(async () => {
                 </el-popover>
             </template>
         </el-table-column>
-        <el-table-column fixed='right' label='Hành động' width='180' :align="'center'">
+        <el-table-column fixed='right' label='Hành động' width='150' :align="'center'">
             <template v-slot='scope' #default>
                 <el-tooltip effect='dark' content='Xem chi phí' placement='bottom'>
-                    <el-button type='warning' size='small' plain @click='editUserModal?.openModal(scope.row)'>
+                    <el-button type='warning' size='small' plain @click='handleRoute({ id: scope.row.id, tab: 1 })'>
                         <FAIcon icon='fa-solid fa-dollar-sign' color='' />
                     </el-button>
                 </el-tooltip>

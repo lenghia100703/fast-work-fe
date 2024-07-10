@@ -1,55 +1,61 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
+
 import { ElForm, ElMessage, FormRules } from 'element-plus'
-import { createConstruction } from '@/services/construction'
-import { useAuthenticationStore } from '@/stores/useAuthenticationStore'
+import { onMounted, reactive, ref } from 'vue'
+import { createExpense } from '@/services/expense'
 
 const props = defineProps<{
     callBack: () => Promise<void>;
 }>()
 
-const authenticationStore = useAuthenticationStore()
-authenticationStore.loadFromServer()
-
 const postForm = ref({
-    username: '',
-    phone: '',
-    address: '',
+    title: '',
+    sellerPhone: '',
+    quantity: 0,
     description: '',
+    price: 0,
 })
+
+const constructionId = ref(0)
 
 const postFormRef = ref<typeof ElForm | null>(null)
 const visible = ref<boolean>(false)
-
 const rules = reactive<FormRules>({
-    username: [
+    title: [
         {
             trigger: ['blur'],
             required: true,
-            message: 'Vui lòng nhập tên chủ nhà',
+            message: 'Vui lòng nhập tiêu đề',
         },
     ],
-    phone: [
+    sellerPhone: [
         {
             trigger: ['blur'],
             required: true,
-            message: 'Vui lòng nhập số điện thoại chủ nhà',
+            message: 'Vui lòng nhập số điện thoại người bán',
         },
     ],
-    address: [
+    price: [
         {
             trigger: ['blur'],
             required: true,
-            message: 'Vui lòng nhập địa chỉ công trình',
+            message: 'Vui lòng nhập đơn giá',
+        },
+    ],
+    quantity: [
+        {
+            trigger: ['blur'],
+            required: true,
+            message: 'Vui lòng nhập số lượng',
         },
     ],
 })
 const createLoading = ref<boolean>(false)
 
-const handleCreateConstruction = async (data: any) => {
+const handleCreateExpense = async (data: any) => {
     createLoading.value = true
     try {
-        await createConstruction(data)
+        await createExpense(data)
         await props.callBack()
         ElMessage({
             message: 'Thêm thành công',
@@ -68,19 +74,20 @@ const handleCreateConstruction = async (data: any) => {
     }
 }
 
-
 const submitForm = (formEl: typeof ElForm | null) => {
     if (!formEl) return
     formEl.validate(async (valid: any) => {
         if (valid) {
             const data = {
-                username: postForm.value.username,
+                title: postForm.value.title,
                 description: postForm.value.description,
-                phone: postForm.value.phone,
-                address: postForm.value.address,
+                sellerPhone: postForm.value.sellerPhone,
+                quantity: postForm.value.quantity,
+                price: postForm.value.price,
+                constructionId: constructionId.value
             }
 
-            await handleCreateConstruction(data)
+            await handleCreateExpense(data)
         } else {
             return false
         }
@@ -88,15 +95,17 @@ const submitForm = (formEl: typeof ElForm | null) => {
 }
 
 const resetForm = (form: any) => {
-    form.username = ''
+    form.title = ''
     form.description = ''
-    form.phone = ''
-    form.address = ''
+    form.sellerPhone = ''
+    form.quantity = 0
+    form.price = 0
 }
 
-function openModal() {
+function openModal(data: any) {
     visible.value = true
     resetForm(postForm.value)
+    constructionId.value = data
 }
 
 onMounted(async () => {
@@ -110,14 +119,19 @@ defineExpose({
 <template>
     <el-dialog v-model='visible' title='Thêm công trình' width='40%' top='8vh'>
         <el-form :model='postForm' label-position='top' ref='postFormRef' :rules='rules' :hide-required-asterisk="true">
-            <el-form-item label='Tên chủ nhà:' prop='username'>
-                <el-input v-model='postForm.username' placeholder='Nhập tên chủ nhà' type='text' spellcheck='false' clearable />
+            <el-form-item label='Tiêu đề:' prop='title'>
+                <el-input v-model='postForm.title' placeholder='Nhập tiêu đề' type='text' spellcheck='false' clearable />
             </el-form-item>
-            <el-form-item label='Số điện thoại:' prop='phone'>
-                <el-input v-model='postForm.phone' placeholder='Nhập số điện thoại' type='text' spellcheck='false' clearable />
+            <el-form-item label='Số điện thoại:' prop='sellerPhone'>
+                <el-input v-model='postForm.sellerPhone' placeholder='Nhập số điện thoại' type='text' spellcheck='false' clearable />
             </el-form-item>
-            <el-form-item label='Địa chỉ:' prop='address'>
-                <el-input v-model='postForm.address' placeholder='Nhập địa chỉ' type='text' spellcheck='false' clearable />
+            <el-form-item label='Đơn giá:' prop='price'>
+                <el-input v-model='postForm.price' placeholder='Nhập đơn giá' type='number' spellcheck='false' clearable >
+                    <template #append>VND</template>
+                </el-input>
+            </el-form-item>
+            <el-form-item label='Số lượng:' prop='quantity'>
+                <el-input v-model='postForm.quantity' placeholder='Nhập số lượng' type='number' spellcheck='false' clearable />
             </el-form-item>
             <el-form-item label='Chi tiết:' prop='description'>
                 <el-input v-model='postForm.description' placeholder='Nhập chi tiết' type='textarea'

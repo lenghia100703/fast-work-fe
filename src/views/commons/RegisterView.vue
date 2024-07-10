@@ -4,8 +4,19 @@ import { useRouter } from 'vue-router'
 import { onMounted, reactive, ref } from 'vue'
 import { loadingFullScreen } from '@/utils/loadingFullScreen'
 import { ElForm, ElMessage, FormRules } from 'element-plus'
+import { registerUser } from '@/services/auth'
 
 const router = useRouter()
+const options = [
+    {
+        label: 'Nhân viên',
+        value: 'EMPLOYEE'
+    },
+    {
+        label: 'Chủ thầu',
+        value: 'OWNER'
+    },
+]
 const rules = reactive<FormRules<any>>({
     username: [
         {
@@ -40,6 +51,13 @@ const rules = reactive<FormRules<any>>({
             trigger: 'blur',
         },
     ],
+    role: [
+        {
+            trigger: ['blur', 'change'],
+            required: true,
+            message: 'Vui lòng chọn vai trò',
+        },
+    ],
     confirmPassword: [
         {
             required: true,
@@ -64,19 +82,20 @@ const registerForm = reactive<any>({
     email: '',
     password: '',
     confirmPassword: '',
-    phone: '',
+    role: ''
 })
 const submitLoading = ref<boolean>(false)
 
 const register = async (user: any) => {
     submitLoading.value = true
     try {
+        await registerUser(user)
         console.log('Register successful')
         ElMessage({
             type: 'success',
             message: 'Đăng ký thành công.',
         })
-        await router.push({ name: 'home' })
+        await router.push({ name: 'confirm-register' })
     } catch (error) {
         console.error('Register failed: ' + error)
         ElMessage.error('Đăng ký thất bại. Kiểm tra lại thông tin.')
@@ -109,7 +128,7 @@ onMounted(() => {
             <el-col :span='12'>
                 <div class='register-form'>
                     <h2 class="title">Đăng ký</h2>
-                    <el-form label-position="top" :model="registerForm" :rules="rules" ref="registerFormRef">
+                    <el-form label-position="top" :model="registerForm" :rules="rules" ref="registerFormRef" :hide-required-asterisk="true">
                         <el-form-item label="Tên người dùng" prop="username">
                             <el-input v-model="registerForm.username" type="text" clearable />
                         </el-form-item>
@@ -122,9 +141,18 @@ onMounted(() => {
                         <el-form-item label="Xác nhận mật khẩu" prop="confirmPassword">
                             <el-input v-model="registerForm.confirmPassword" type="password" :show-password="true" />
                         </el-form-item>
+                        <el-form-item label='Vai trò:' prop='role'>
+                            <el-select v-model="registerForm.role" placeholder="Chọn vai trò">
+                                <el-option
+                                    v-for="item in options"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+                                />
+                            </el-select>
+                        </el-form-item>
                         <el-form-item style='width: 100%;'>
                             <el-button
-                                size='large'
                                 class="btn-submit"
                                 type="primary"
                                 :loading="submitLoading"

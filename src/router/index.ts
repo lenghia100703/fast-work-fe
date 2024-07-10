@@ -11,9 +11,15 @@ import ManageConstructionView from '@/views/owner/ManageConstructionView.vue'
 import ManageEmployeeView from '@/views/owner/ManageEmployeeView.vue'
 import UserDetailsView from '@/views/commons/UserDetailsView.vue'
 import ManageMoneyView from '@/views/owner/ManageMoneyView.vue'
-import ConstructionDetailsView from '../views/commons/ConstructionDetailsView.vue'
+import ConstructionDetailsView from '@/views/commons/ConstructionDetailsView.vue'
+import { useAuthenticationStore } from '@/stores/useAuthenticationStore'
+import NotConfirmLayout from '@/layouts/NotConfirmLayout.vue'
+import ConfirmRegisterView from '@/views/commons/ConfirmRegisterView.vue'
+import ProcessTokenFormMailView from '@/views/commons/ProcessTokenFormMailView.vue'
+import ResendConfirmationView from '@/views/commons/ResendConfirmationView.vue'
+import ForgotPasswordView from '@/views/commons/ForgotPasswordView.vue'
 
-export const router = createRouter({
+const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
@@ -49,16 +55,19 @@ export const router = createRouter({
                     path: PATHS.MANAGE_CONSTRUCTION,
                     component: ManageConstructionView,
                     name: 'manage-construction',
+                    meta: { requiresAuth: true, role: 'OWNER' }
                 },
                 {
                     path: PATHS.MANAGE_EMPLOYEE,
                     component: ManageEmployeeView,
                     name: 'manage-employee',
+                    meta: { requiresAuth: true, role: 'OWNER' }
                 },
                 {
                     path: PATHS.MANAGE_EXPENSE,
                     component: ManageMoneyView,
                     name: 'manage-expense',
+                    meta: { requiresAuth: true, role: 'OWNER' }
                 },
             ],
         },
@@ -79,5 +88,51 @@ export const router = createRouter({
                 },
             ],
         },
+
+        {
+            path: PATHS.HOME,
+            component: NotConfirmLayout,
+            children: [
+                {
+                    path: PATHS.CONFIRM_REGISTER,
+                    component: ConfirmRegisterView,
+                    name: 'confirm-register',
+                },
+                {
+                    path: PATHS.CONFIRM_REGISTRATION,
+                    component: ProcessTokenFormMailView,
+                    name: 'confirm-registration',
+                },
+                {
+                    path: PATHS.RESEND_CONFIRMATION,
+                    component: ResendConfirmationView,
+                    name: 'resend-confirmation',
+                },
+                {
+                    path: PATHS.FORGOT_PASSWORD,
+                    component: ForgotPasswordView,
+                    name: 'forgot-password',
+                },
+            ]
+        }
     ],
 })
+
+router.beforeEach(async (to, from, next) => {
+    const authenticationStore = useAuthenticationStore()
+    await authenticationStore.loadFromServer()
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+    const userRole = authenticationStore.role
+
+    if (requiresAuth && !authenticationStore.authenticated) {
+        next({ name: 'login' })
+    } else if (requiresAuth && to.meta.role && to.meta.role !== userRole) {
+        next({ name: 'home' })
+    } else if ((to.name === 'login' || to.name === 'register') && authenticationStore.authenticated) {
+        next({ name: 'home' })
+    } else {
+        next()
+    }
+})
+
+export { router }

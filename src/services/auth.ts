@@ -9,7 +9,7 @@ export const logout = async () => {
     return await http.post(AuthAPI.LOGOUT)
 }
 
-export const register = async (payload: any) => {
+export const registerUser = async (payload: any) => {
     return await http.post(AuthAPI.REGISTER, payload)
 }
 
@@ -19,4 +19,8 @@ export const forgotPassword = async (payload: any) => {
 
 export const reSendConfirmation = async (payload: any) => {
     return (await http.post(AuthAPI.RESEND_CONFIRMATION, payload)).data
+}
+
+export const confirmRegistration = async (payload: any) => {
+    return (await http.post(AuthAPI.CONFIRM_REGISTRATION, payload)).data
 }

@@ -2,16 +2,39 @@
 
 import { useRoute } from 'vue-router'
 import { ElForm, ElMessage, FormRules } from 'element-plus'
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { loadingFullScreen } from '@/utils/loadingFullScreen'
 import { editConstruction, getConstructionById } from '@/services/construction'
-import { convertDateTime } from '@/helpers/convertDateTime.ts'
-import { numberWithComas } from '@/helpers/numberWithComas.ts'
+import { convertDateTime } from '@/helpers/convertDateTime'
+import { numberWithComas } from '@/helpers/numberWithComas'
 import FAIcon from '@/components/commons/FAIcon.vue'
-import { formatPhoneNumber } from '@/helpers/formatPhoneNumber.ts'
-import { getUserByPage } from '@/services/user.ts'
+import { formatPhoneNumber } from '@/helpers/formatPhoneNumber'
+import { getExpenseByPage } from '@/services/expense'
+import { Search } from '@element-plus/icons-vue'
+import AddExpenseModal from '@/components/modals/expense/AddExpenseModal.vue'
 
+const route = useRoute()
 const tab = ref(0)
+
+const handleChangeTab = async (value: any) => {
+    tab.value = value
+    if (tab.value === 0) {
+        await loadConstructionDetails()
+    } else if (tab.value === 1) {
+        await loadTableData(1)
+    }
+}
+
+watch(
+    () => route.query.tab,
+    (newTab) => {
+        if (newTab !== undefined) {
+            handleChangeTab(Number(newTab))
+        }
+    }
+)
+
+const addExpenseModal = ref<InstanceType<typeof AddExpenseModal>>()
 const tableData = ref<any[]>([])
 const totalData = ref<any>(0)
 const tableLoading = ref(false)
@@ -31,7 +54,6 @@ const form = ref({
 const constructionData = ref()
 const editLoading = ref(false)
 const editFormRef = ref<typeof ElForm | null>(null)
-const route = useRoute()
 const id = route.params.id
 const ownerUser = computed(() => `${form.value.owner.username} (${form.value.owner.id})`)
 const validateRegistrationDate = computed(() => convertDateTime(form.value.registrationDate))
@@ -67,7 +89,7 @@ const loadConstructionDetails = async () => {
 const loadTableData = async (page: any) => {
     tableLoading.value = true
     try {
-        const res = await getUserByPage(page)
+        const res = await getExpenseByPage(page)
         tableData.value = res.data
         totalData.value = res.totalData
     } catch (e) {
@@ -117,22 +139,16 @@ const resetForm = (form: any) => {
     form.phone = constructionData.value.phone
     form.address = constructionData.value.address
     form.description = constructionData.value.description
-    console.log(form.phone, constructionData.value.phone)
-    console.log(constructionData.value)
 }
 
-const handleChangeTab = async (value: any) => {
-    tab.value = value
-    if (tab.value === 0) {
-        await loadConstructionDetails()
-    } else if (tab.value === 1) {
-        await loadTableData(1)
-    }
-}
+
 
 onMounted(async () => {
     await loadConstructionDetails()
     loadingFullScreen()
+    if (route.query.tab) {
+        handleChangeTab(Number(route.query.tab))
+    }
 })
 
 </script>
@@ -163,7 +179,7 @@ onMounted(async () => {
                     </div>
                 </el-card>
             </el-col>
-            <el-col :span="(tab === 1) ? 18 : 14">
+            <el-col :span="14">
                 <el-card v-if="tab === 0">
                     <div class='user-container'>
                         <div class='user-info-detail'>
@@ -220,6 +236,28 @@ onMounted(async () => {
                     </div>
                 </el-card>
                 <el-card v-else-if="tab === 1">
+                    <div class='search'>
+                        <div class='left'>
+                            <el-tooltip effect='dark' content='Thêm chi phí' placement='bottom'>
+                                <el-button plain type="info" @click='addExpenseModal?.openModal(id)'>
+                                    <FAIcon icon='fa-solid fa-plus' color='' class='icon-margin' />
+                                </el-button>
+                            </el-tooltip>
+                        </div>
+                        <div class='flex-grow'></div>
+                        <div class='right'>
+                            <el-input
+                                v-model="searchName"
+                                style="max-width: 600px"
+                                placeholder="Tìm kiếm..."
+                                class="input-with-select"
+                            >
+                                <template #append>
+                                    <el-button :icon="Search" :loading='searchLoading' @click='handleSearch' />
+                                </template>
+                            </el-input>
+                        </div>
+                    </div>
                     <el-table
                         :data='tableData'
                         v-loading='tableLoading'
@@ -238,31 +276,19 @@ onMounted(async () => {
                                 <el-popover placement='bottom' :width='200' trigger='click' :content='row.title'
                                             popper-style="text-align: center">
                                     <template #reference>
-                                        <el-text type="primary" truncated> {{ row.title }}</el-text>
+                                        <el-text truncated> {{ row.title }}</el-text>
                                     </template>
                                 </el-popover>
                             </template>
                         </el-table-column>
-                        <el-table-column label='Số lượng' width="180" prop='quantity' sortable align="center">
+                        <el-table-column label='Số lượng' width="120" prop='quantity' sortable align="center">
                             <template #default='{ row }'>
-                                <el-popover placement='bottom' :width='200' trigger='click' :content='row.quantity'
-                                            popper-style="text-align: center">
-                                    <template #reference>
-                                        <el-text type="primary" truncated> {{ row.quantity }}</el-text>
-                                    </template>
-                                </el-popover>
+                                <el-text truncated> {{ row.quantity }}</el-text>
                             </template>
                         </el-table-column>
                         <el-table-column label='Giá' width="180" prop='price' :align="'center'">
                             <template #default='{ row }'>
-                                <el-popover placement='bottom' :width='200' trigger='click' :content="numberWithComas(row.price, '.') + ' vnđ'"
-                                            popper-style="text-align: center">
-                                    <template #reference
-                                    >
-                                        <el-text truncated> {{ numberWithComas(row.price, '.') + ' vnđ' }}</el-text>
-                                    </template
-                                    >
-                                </el-popover>
+                                <el-text truncated> {{ numberWithComas(row.price, '.') + ' vnđ' }}</el-text>
                             </template>
                         </el-table-column>
                         <el-table-column label='Tổng tiền' width="180" prop='totalPrice' align="center" sortable>
@@ -280,15 +306,7 @@ onMounted(async () => {
                         </el-table-column>
                         <el-table-column label='Điện thoại đối tác' width="200" prop='sellerPhone' :align="'center'">
                             <template #default='{ row }'>
-                                <el-popover placement='bottom' :width='200' trigger='click' :content='formatPhoneNumber(row.sellerPhone)'
-                                            popper-style="text-align: center"
-                                >
-                                    <template #reference
-                                    >
-                                        <el-text truncated> {{ formatPhoneNumber(row.sellerPhone) }}</el-text>
-                                    </template
-                                    >
-                                </el-popover>
+                                <el-text truncated> {{ formatPhoneNumber(row.sellerPhone) }}</el-text>
                             </template>
                         </el-table-column>
                         <el-table-column label='Chi tiết' width="250" prop='description'>
@@ -341,6 +359,8 @@ onMounted(async () => {
             </el-col>
         </el-row>
     </div>
+
+    <AddExpenseModal ref="addExpenseModal"  :call-back="() => loadTableData(1)"/>
 </template>
 
 <style scoped>
@@ -381,12 +401,6 @@ div.active {
 
 .custom-style-notification .el-segmented {
     --el-border-radius-base: 16px;
-}
-
-.title-page {
-    text-align: center;
-    font-size: 25px;
-    margin-bottom: 28px;
 }
 
 .search {
